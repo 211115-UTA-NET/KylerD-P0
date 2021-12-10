@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Revature\\KylerD-P0\\SpiceProShop\\SpiceProShop.csproj",
-      "projectName": "SpiceProShop",
-      "projectPath": "D:\\Revature\\KylerD-P0\\SpiceProShop\\SpiceProShop.csproj",
+      "projectUniqueName": "D:\\Revature\\KylerD-P0\\SpiceItUp\\SpiceItUp.csproj",
+      "projectName": "SpiceItUp",
+      "projectPath": "D:\\Revature\\KylerD-P0\\SpiceItUp\\SpiceItUp.csproj",
       "packagesPath": "C:\\Users\\Kyler Dennis\\.nuget\\packages\\",
-      "outputPath": "D:\\Revature\\KylerD-P0\\SpiceProShop\\obj\\",
+      "outputPath": "D:\\Revature\\KylerD-P0\\SpiceItUp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Kyler Dennis\\AppData\\Roaming\\NuGet\\NuGet.Config",

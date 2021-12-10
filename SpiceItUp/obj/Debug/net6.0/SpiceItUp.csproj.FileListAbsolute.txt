@@ -1,0 +1,15 @@
+D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\SpiceItUp.exe
+D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\SpiceItUp.deps.json
+D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\SpiceItUp.runtimeconfig.json
+D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\SpiceItUp.dll
+D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\ref\SpiceItUp.dll
+D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\SpiceItUp.pdb
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.csproj.AssemblyReference.cache
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.AssemblyInfoInputs.cache
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.AssemblyInfo.cs
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.csproj.CoreCompileInputs.cache
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.dll
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\ref\SpiceItUp.dll
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.pdb
+D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.genruntimeconfig.cache
