@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
-    public class Employee
+    public class AccountLogin
     {
-        protected string firstName;
-        protected string lastName;
-        protected string selectedStore;
+
     }
 }

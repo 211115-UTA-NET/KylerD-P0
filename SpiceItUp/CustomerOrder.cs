@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
-    public class Order
+    public class CustomerOrder
     {
         protected string storeLocation;
         protected int orderId;
