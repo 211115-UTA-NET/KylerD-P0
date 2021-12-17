@@ -36,6 +36,7 @@
                 case 3:
                     break;
                 case 4:
+                    Console.WriteLine("Thank you for shopping with us! Have a good day!");
                     break;
             }
         }

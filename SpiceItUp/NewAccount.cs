@@ -65,6 +65,8 @@ namespace SpiceItUp
                 }
             }
 
+            Console.WriteLine($"Your account has been created, {newName}! You may now login!");
+
             Console.WriteLine(newName);
             Console.WriteLine(newUsername);
             Console.WriteLine(newPassword);
