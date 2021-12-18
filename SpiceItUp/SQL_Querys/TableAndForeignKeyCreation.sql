@@ -27,21 +27,13 @@ CREATE TABLE TransactionHistory
     IsStoreOrder VARCHAR(5) NOT NULL
 )
 
-CREATE TABLE Customers
+CREATE TABLE UserInformation
 (
-    CustomerID INT PRIMARY KEY, --UserID
-    FirstName VARCHAR(50) NOT NULL,
-    LastName VARCHAR(50) NOT NULL,
-    PhoneNumber BIGINT NOT NULL
-)
-
-CREATE TABLE Employees
-(
-    EmployeeID INT PRIMARY KEY, --UserID
+    UserID INT PRIMARY KEY,
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     PhoneNumber BIGINT NOT NULL,
-    AdminAccess VARCHAR(5) NOT NULL
+    IsEmployee VARCHAR(5) NOT NULL
 )
 
 CREATE TABLE StoreInventory
@@ -68,8 +60,7 @@ CREATE TABLE EmployeeOrderingDetails
 
 ALTER TABLE TransactionHistory ADD FOREIGN KEY (UserID) REFERENCES LoginManager(UserID);
 ALTER TABLE TransactionHistory ADD FOREIGN KEY (StoreID) REFERENCES StoreInfo(StoreID);
-ALTER TABLE Customers ADD FOREIGN KEY (CustomerID) REFERENCES LoginManager(UserID);
-ALTER TABLE Employees ADD FOREIGN KEY (EmployeeID) REFERENCES LoginManager(UserID);
+ALTER TABLE UserInformation ADD FOREIGN KEY (UserID) REFERENCES LoginManager(UserID);
 ALTER TABLE StoreInventory ADD FOREIGN KEY (StoreID) REFERENCES StoreInfo(StoreID);
 ALTER TABLE StoreInventory ADD FOREIGN KEY (ItemID) REFERENCES ItemDetails(ItemID);
 ALTER TABLE CustomerTransactionDetails ADD FOREIGN KEY (TransactionID) REFERENCES TransactionHistory(TransactionID);

@@ -30,12 +30,12 @@ namespace SpiceItUp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Looks like there was an error. Please try again.");
+                Console.WriteLine("Looks like there was an error. You may have used a username that already exists. Please try again.");
             }
             SpiceItUp.Program.Main();
         }
 
-        public static void CustomerInformation()
+        private static void CustomerInformation()
         {
             while (true) //Create an account FIRST name
             {
@@ -95,7 +95,7 @@ namespace SpiceItUp
             }
         }
 
-        public static void CustomerLoginInformation()
+        private static void CustomerLoginInformation()
         {
             while (true) //Create an account username
             {
@@ -142,7 +142,7 @@ namespace SpiceItUp
             }
         }
 
-        public static void AddNewCustomer()
+        private static void AddNewCustomer()
         {
             using SqlConnection connection = new(connectionString);
 
@@ -170,13 +170,14 @@ namespace SpiceItUp
 
             // Add the customer's information to SQL
             connection.Open();
-            string addNewCustomer = $"INSERT Customers (CustomerID, FirstName, LastName, PhoneNumber) VALUES (@customerID, @firstName, @lastName, @phoneNumber);";
-            using SqlCommand newCustomerCreationCommand = new(addNewCustomer, connection);
-            newCustomerCreationCommand.Parameters.Add("@customerID", System.Data.SqlDbType.Int).Value = finalIDGrab;
-            newCustomerCreationCommand.Parameters.Add("@firstName", System.Data.SqlDbType.VarChar).Value = firstName;
-            newCustomerCreationCommand.Parameters.Add("@lastName", System.Data.SqlDbType.VarChar).Value = lastName;
-            newCustomerCreationCommand.Parameters.Add("@phoneNumber", System.Data.SqlDbType.BigInt).Value = phoneNumber;
-            newCustomerCreationCommand.ExecuteNonQuery();
+            string addNewCustomer = $"INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee) VALUES (@customerID, @firstName, @lastName, @phoneNumber, @isEmployee);";
+            using SqlCommand newUserCreationCommand = new(addNewCustomer, connection);
+            newUserCreationCommand.Parameters.Add("@customerID", System.Data.SqlDbType.Int).Value = finalIDGrab;
+            newUserCreationCommand.Parameters.Add("@firstName", System.Data.SqlDbType.VarChar).Value = firstName;
+            newUserCreationCommand.Parameters.Add("@lastName", System.Data.SqlDbType.VarChar).Value = lastName;
+            newUserCreationCommand.Parameters.Add("@phoneNumber", System.Data.SqlDbType.BigInt).Value = phoneNumber;
+            newUserCreationCommand.Parameters.Add("@isEmployee", System.Data.SqlDbType.VarChar).Value = "FALSE";
+            newUserCreationCommand.ExecuteNonQuery();
             connection.Close();
 
             Console.WriteLine($"Your account has been created, {firstName}! You may now login!");

@@ -8,8 +8,7 @@
             Console.WriteLine("Lets get started!");
             Console.WriteLine("1: Create New Account");
             Console.WriteLine("2: Existing Account Login");
-            Console.WriteLine("3: Employee Login");
-            Console.WriteLine("4: Exit");
+            Console.WriteLine("3: Exit");
 
             int userEntry;
 
@@ -32,10 +31,9 @@
                     SpiceItUp.NewAccount.CreateAnAccount();
                     break;
                 case 2:
+                    SpiceItUp.AccountLogin.LoginManager();
                     break;
                 case 3:
-                    break;
-                case 4:
                     Console.WriteLine("Thank you for shopping with us! Have a good day!");
                     break;
             }

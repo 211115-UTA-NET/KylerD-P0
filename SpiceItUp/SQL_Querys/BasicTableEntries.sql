@@ -1,7 +1,7 @@
 INSERT LoginManager (Username, "Password")
 VALUES ('ManagerKyler', 'ManagerPassword');
 
-INSERT Employees (EmployeeID, FirstName, LastName, PhoneNumber, AdminAccess)
+INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee)
 VALUES (1, 'Kyler', 'Dennis', 4238886190, 'TRUE');
 
 --DELETE FROM Employees WHERE EmployeeID = 1;
@@ -28,7 +28,7 @@ VALUES
 (104, 6, 25), (104, 7, 25), (104, 8, 25), (104, 9, 25), (104, 10, 25);
 
 SELECT * FROM LoginManager;
-SELECT * FROM Employees;
+SELECT * FROM UserInformation;
 SELECT * FROM StoreInfo;
 SELECT * FROM ItemDetails;
 SELECT * FROM StoreInventory;

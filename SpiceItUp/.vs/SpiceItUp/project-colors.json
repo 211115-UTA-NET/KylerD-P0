@@ -5,6 +5,11 @@
       "ProjectGuid": "b92d9acc-2c88-498c-bd1a-3b3966151cae",
       "DisplayName": "SpiceItUp",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1
