@@ -1,8 +1,10 @@
 INSERT LoginManager (Username, "Password")
 VALUES ('ManagerKyler', 'ManagerPassword');
 
-INSERT Employees (EmployeeID, FirstName, LastName, PhoneNumber)
-VALUES (1, 'Kyler', 'Dennis', 4238886190);
+INSERT Employees (EmployeeID, FirstName, LastName, PhoneNumber, AdminAccess)
+VALUES (1, 'Kyler', 'Dennis', 4238886190, 'TRUE');
+
+--DELETE FROM Employees WHERE EmployeeID = 1;
 
 INSERT StoreInfo (StoreName)
 VALUES ('Spice It Up Chattanooga'), ('Spice It Up Knoxville'), ('Spice It Up Nashville'), ('Spice It Up Memphis');

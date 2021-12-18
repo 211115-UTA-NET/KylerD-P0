@@ -1,4 +1,4 @@
-﻿namespace Project0
+﻿namespace SpiceItUp
 {
     public class Program
     {

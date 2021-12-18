@@ -22,12 +22,14 @@ CREATE TABLE TransactionHistory
 (
     TransactionID INT IDENTITY (1, 1) PRIMARY KEY,
     UserID INT NOT NULL,
-    StoreID INT NOT NULL
+    StoreID INT NOT NULL,
+    "Timestamp" DATETIMEOFFSET NOT NULL DEFAULT (SYSDATETIMEOFFSET()),
+    IsStoreOrder VARCHAR(5) NOT NULL
 )
 
 CREATE TABLE Customers
 (
-    CustomerID INT PRIMARY KEY,
+    CustomerID INT PRIMARY KEY, --UserID
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     PhoneNumber BIGINT NOT NULL
@@ -35,10 +37,11 @@ CREATE TABLE Customers
 
 CREATE TABLE Employees
 (
-    EmployeeID INT PRIMARY KEY,
+    EmployeeID INT PRIMARY KEY, --UserID
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
-    PhoneNumber BIGINT NOT NULL
+    PhoneNumber BIGINT NOT NULL,
+    AdminAccess VARCHAR(5) NOT NULL
 )
 
 CREATE TABLE StoreInventory
