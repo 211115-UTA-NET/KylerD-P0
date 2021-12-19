@@ -8,7 +8,7 @@ namespace SpiceItUp
 {
     public class CustomerOrder
     {
-        protected string storeLocation;
+        protected string? storeLocation;
         protected int orderId;
         private readonly DateTime date = DateTime.Now;
         protected string[,] customerCart = { { "Product", "Quantity", "Price" } };

@@ -10,29 +10,28 @@ namespace SpiceItUp
 {
     public class NewAccount
     {
-        private static string? firstName;
-        private static string? lastName;
-        private static string? phoneNumber;
-        private static string? newUsername;
-        private static string? newPassword;
+        private static string? firstName = "";
+        private static string? lastName = "";
+        private static string? phoneNumber = "";
+        private static string? newUsername = "";
+        private static string? newPassword = "";
 
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
 
         public static void CreateAnAccount()
         {
-            Console.WriteLine("Lets create an account! Type 'EXIT' at any time to return to the home screen.");
+            Console.WriteLine("Lets create an account!");
             CustomerInformation();
             CustomerLoginInformation();
             try
             {
                 AddNewCustomer();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Looks like there was an error. You may have used a username that already exists. Please try again.");
             }
-            SpiceItUp.Program.Main();
         }
 
         private static void CustomerInformation()
@@ -43,13 +42,11 @@ namespace SpiceItUp
                 firstName = Console.ReadLine();
                 if (firstName == "")
                     Console.WriteLine("No entry. Please try again");
-                else if (firstName == "EXIT")
-                    SpiceItUp.Program.Main();
                 else
                 {
                     Console.WriteLine($"Is {firstName} your first name? (Y/N)");
                     string? validFirstName = Console.ReadLine();
-                    if (validFirstName != "" && "Y" == validFirstName.ToUpper())
+                    if (validFirstName != "" && "Y" == validFirstName?.ToUpper())
                         break;
                 }
             }
@@ -60,13 +57,11 @@ namespace SpiceItUp
                 lastName = Console.ReadLine();
                 if (lastName == "")
                     Console.WriteLine("No entry. Please try again");
-                else if (lastName == "EXIT")
-                    SpiceItUp.Program.Main();
                 else
                 {
                     Console.WriteLine($"Is {lastName} your last name? (Y/N)");
                     string? validLastName = Console.ReadLine();
-                    if (validLastName != "" && "Y" == validLastName.ToUpper())
+                    if (validLastName != "" && "Y" == validLastName?.ToUpper())
                         break;
                 }
             }
@@ -77,9 +72,7 @@ namespace SpiceItUp
                 phoneNumber = Console.ReadLine();
                 if (phoneNumber == "")
                     Console.WriteLine("No entry. Please try again");
-                else if (phoneNumber == "EXIT")
-                    SpiceItUp.Program.Main();
-                else if (phoneNumber.Length < 9)
+                else if (phoneNumber?.Length < 9)
                 {
                     Console.WriteLine("The phone number you entered is not long enough. Please enter a new phone number.");
                 }
@@ -87,7 +80,7 @@ namespace SpiceItUp
                 {
                     Console.WriteLine($"Is {phoneNumber} your valid phone number? (Y/N)");
                     string? validPhoneNumber = Console.ReadLine();
-                    if (validPhoneNumber != "" && "Y" == validPhoneNumber.ToUpper())
+                    if (validPhoneNumber != "" && "Y" == validPhoneNumber?.ToUpper())
                         break;
                     else if (validPhoneNumber == "EXIT")
                         SpiceItUp.Program.Main();
@@ -103,16 +96,12 @@ namespace SpiceItUp
                 newUsername = Console.ReadLine();
                 if (newUsername == "")
                     Console.WriteLine("No entry. Please try again");
-                else if (firstName == "EXIT")
-                    SpiceItUp.Program.Main();
                 else
                 {
                     Console.WriteLine($"Is {newUsername} your username? (Y/N)");
                     string? validUsername = Console.ReadLine();
-                    if (validUsername != "" && "Y" == validUsername.ToUpper())
+                    if (validUsername != "" && "Y" == validUsername?.ToUpper())
                         break;
-                    else if (validUsername == "EXIT")
-                        SpiceItUp.Program.Main();
                 }
             }
 
@@ -122,9 +111,7 @@ namespace SpiceItUp
                 newPassword = Console.ReadLine();
                 if (newPassword == "")
                     Console.WriteLine("No entry. Please try again");
-                else if (newPassword == "EXIT")
-                    SpiceItUp.Program.Main();
-                else if (newPassword.Length < 8)
+                else if (newPassword?.Length < 8)
                 {
                     Console.WriteLine("Password is not long enough. Please enter a new password.");
                 }
@@ -132,10 +119,8 @@ namespace SpiceItUp
                 {
                     Console.WriteLine("Please re-enter your password for verification:");
                     string? validPassword = Console.ReadLine();
-                    if (validPassword != "" && newPassword == validPassword && newPassword.Length >= 8)
+                    if (validPassword != "" && newPassword == validPassword && newPassword?.Length >= 8)
                         break;
-                    else if (validPassword == "EXIT")
-                        SpiceItUp.Program.Main();
                     else
                         Console.WriteLine("Passwords did not match. Please try again.");
                 }

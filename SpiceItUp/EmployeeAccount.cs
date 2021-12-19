@@ -21,7 +21,7 @@ namespace SpiceItUp
             this.phoneNumber = phoneNumber;
         }
 
-        public void EmployeeOptions()
+        public void UserOptions()
         {
             Console.WriteLine($"Welcome, {firstName} {lastName[0]}! What would you like to do?");
         }

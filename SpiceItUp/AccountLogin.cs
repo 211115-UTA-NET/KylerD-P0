@@ -10,10 +10,10 @@ namespace SpiceItUp
     public class AccountLogin
     {
         private static int userID = 0;
-        private static string? firstName = "";
-        private static string? lastName = "";
+        private static string firstName = "";
+        private static string lastName = "";
         private static double phoneNumber = 0;
-        private static string? isEmployee = "FALSE";
+        private static string isEmployee = "";
 
         private static string? enteredUsername;
         private static string? enteredPassword;
@@ -22,7 +22,7 @@ namespace SpiceItUp
 
         public static void LoginManager()
         {
-            Console.WriteLine("Lets get you logged in! Type 'EXIT' at any time to return to the home screen");
+            Console.WriteLine("Lets get you logged in!");
             
             // User enters their username
             while (true)
@@ -31,8 +31,6 @@ namespace SpiceItUp
                 enteredUsername = Console.ReadLine();
                 if (enteredUsername == null)
                     Console.WriteLine("Invalid entry.");
-                else if (enteredUsername == "EXIT")
-                    SpiceItUp.Program.Main();
                 else
                     break;
             }
@@ -44,17 +42,15 @@ namespace SpiceItUp
                 enteredPassword = Console.ReadLine();
                 if (enteredPassword == null)
                     Console.WriteLine("Invalid entry.");
-                else if (enteredUsername == "EXIT")
-                    SpiceItUp.Program.Main();
                 else
                     break;
             }
 
             try
             {
-                TestEntries(); // Is the username and password valid?
+                TestEntries();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("There was an error logging you in. Please try again.");
             }
@@ -63,14 +59,16 @@ namespace SpiceItUp
             {
                 CustomerAccount customerLogin;
                 customerLogin = new CustomerAccount(userID, firstName, lastName, phoneNumber);
-                customerLogin.CustomerOptions();
+                customerLogin.UserOptions();
             }
             else if (isEmployee == "TRUE") // Is this an employee account?
             {
                 EmployeeAccount employeeLogin;
                 employeeLogin = new EmployeeAccount(userID, firstName, lastName, phoneNumber);
-                employeeLogin.EmployeeOptions();
+                employeeLogin.UserOptions();
             }
+            else
+                Console.WriteLine("Invalid account. Please try again");
         }
 
         private static void TestEntries()
