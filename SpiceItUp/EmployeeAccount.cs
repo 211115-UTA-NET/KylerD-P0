@@ -13,6 +13,8 @@ namespace SpiceItUp
         protected string lastName;
         protected double phoneNumber;
 
+        private bool logout = false;
+
         public EmployeeAccount(int userID, string firstName, string lastName, double phoneNumber)
         {
             this.userID = userID;
@@ -23,7 +25,46 @@ namespace SpiceItUp
 
         public void UserOptions()
         {
-            Console.WriteLine($"Welcome, {firstName} {lastName[0]}! What would you like to do?");
+            while (logout == false)
+            {
+                Console.WriteLine($"Welcome, employee {firstName} {lastName[0]}! What would you like to do?");
+                Console.WriteLine("1: Start a new order");
+                Console.WriteLine("2: View order history");
+                Console.WriteLine("3: View store inventory");
+                Console.WriteLine("4: Log out");
+
+                int userEntry;
+
+                while (true) //Test to ensure user entry is valid
+                {
+                    string? mySelection = Console.ReadLine();
+                    bool validEntry = int.TryParse(mySelection, out userEntry);
+                    if (validEntry == true && userEntry >= 1 && userEntry <= 4)
+                    {
+                        break; //Break when valid
+                    }
+                    else
+                        Console.WriteLine("Invalid selection. Please try again.");
+                }
+
+                //Console.WriteLine(userEntry);
+                switch (userEntry)
+                {
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+                        SpiceItUp.LocationInventory.StoreSelection();
+                        break;
+                    case 4:
+                        Console.WriteLine("Goodbye!");
+                        logout = true;
+                        break;
+                }
+            }
         }
     }
 }

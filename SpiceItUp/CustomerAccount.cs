@@ -51,7 +51,7 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-
+                        SpiceItUp.CustomerOrder.StoreSelection();
                         break;
                     case 2:
 

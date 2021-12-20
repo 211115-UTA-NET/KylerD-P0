@@ -16,7 +16,7 @@ namespace SpiceItUp
         {
             while (true)
             {
-                Console.WriteLine("Select a store to view their inventory:");
+                Console.WriteLine("Enter a store number to view their inventory:");
 
                 using SqlConnection connection = new(connectionString);
 
@@ -74,7 +74,7 @@ namespace SpiceItUp
             }
             connection.Close();
 
-            Console.WriteLine("==============================");
+            Console.WriteLine("=================================");
             Console.WriteLine("Item Name\t In Stock\t Price");
             Console.WriteLine("=========\t ========\t =====");
 
@@ -90,7 +90,7 @@ namespace SpiceItUp
             {
                 decimal itemPrice = readInventory.GetDecimal(2);
                 string price = String.Format("{0:0.00}", itemPrice);
-                Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -15}", readInventory.GetString(0), readInventory.GetInt32(1), price));
+                Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -16}", readInventory.GetString(0), readInventory.GetInt32(1), $"${price}"));
             }
             connection.Close();
         }
