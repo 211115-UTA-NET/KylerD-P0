@@ -103,7 +103,8 @@ namespace SpiceItUp
 
         private static void AddToCart()
         {
-            while (true)
+            bool exit = false;
+            while (exit == false)
             {
                 Console.WriteLine($"Store {storeEntry}: {storeName}");
                 Console.WriteLine("================================");
@@ -131,25 +132,86 @@ namespace SpiceItUp
                             string? quantityString = Console.ReadLine();
                             int quantity;
                             bool validQuantity = int.TryParse(quantityString, out quantity);
+                            bool failedEntry = false;
+                            bool sameEntry = false;
+                            bool maxQuantity = false;
                             if (validQuantity == true && quantity > 0 && quantity < 11)
                             {
-                                customerItemID.Add(itemIDList[itemToAdd]);
-                                customerItemName.Add(itemNameList[itemToAdd]);
-                                customerQuantity.Add(inStockList[quantity]);
-                                customerPrice.Add(priceList[itemToAdd] * quantity);
-                                inStockList[itemToAdd] = inStockList[itemToAdd] - quantity;
-                                break;
+                                for (int j = 0; j < customerItemID.Count; j++)
+                                {
+                                    itemToAdd++;
+                                    if (itemToAdd == customerItemID[j])
+                                    {
+                                        itemToAdd--;
+                                        sameEntry = true;
+                                        int oldQuantity = customerQuantity[j];
+                                        int finalQuantity = oldQuantity + quantity;
+                                        if (oldQuantity == 10)
+                                        {
+                                            Console.WriteLine("You already have 10 of this item. Please pick a new item");
+                                            maxQuantity = true;
+                                            break;
+                                        }
+                                        else if (finalQuantity > 10)
+                                        {
+                                            Console.WriteLine($"You already have {oldQuantity} of this item in your cart. This cannot exceed 10 of this item. \nPlease enter a new quantity:");
+                                            failedEntry = true;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            customerQuantity[j] = customerQuantity[j] + quantity;
+                                            decimal newPrice = priceList[itemToAdd] * quantity;
+                                            customerPrice[j] = newPrice + customerPrice[j];
+                                            inStockList[itemToAdd] = inStockList[itemToAdd] - quantity;
+                                            break;
+                                        }
+                                    }
+                                    itemToAdd--;
+                                }
+
+                                if (sameEntry == false && failedEntry == false)
+                                {
+                                    customerItemID.Add(itemIDList[itemToAdd]);
+                                    customerItemName.Add(itemNameList[itemToAdd]);
+                                    customerQuantity.Add(quantity);
+                                    customerPrice.Add(priceList[itemToAdd] * quantity);
+                                    inStockList[itemToAdd] = inStockList[itemToAdd] - quantity;
+                                    break;
+                                }
+                                else if (maxQuantity == true)
+                                    break;
+                                else if (failedEntry == false)
+                                    break;
                             }
                             else if (validQuantity == true && quantity > inStockList[itemToAdd])
                                 Console.WriteLine("This store does not have enough in stock for that quantity. \nPlease enter a new quantity:");
+                            else if (validQuantity == true && quantity < 1)
+                                Console.WriteLine("You cannot hava a quantity less than 1. \nPlease enter a new quantity:");
                             else
                                 Console.WriteLine("Sorry, quantities are limited to 10 per item. \nPlease enter a new quantity.");
                         }
+                        break;
                     }
-                    else if (validEntry == true && itemToAdd < -1 && itemToAdd >= itemIDList.Count)
+                    else if (validEntry == true && itemToAdd < -1 || itemToAdd >= itemIDList.Count)
                         Console.WriteLine("Invalid item ID. \nPlease enter a new item ID:");
                     else if (validEntry == true && itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] == 0)
                         Console.WriteLine("We are currently out of this item. \nPlease enter a new item ID:");
+                    else if (validEntry == true && itemToAdd == -1)
+                        ViewCustomerCart();
+                    else if (adding == "EXIT")
+                    {
+                        itemIDList.Clear();
+                        itemNameList.Clear();
+                        inStockList.Clear();
+                        priceList.Clear();
+                        customerItemID.Clear();
+                        customerItemName.Clear();
+                        customerQuantity.Clear();
+                        customerPrice.Clear();
+                        exit = true;
+                        break;
+                    }
                     else
                         Console.WriteLine("There was an error. \nPlease enter a new item ID:");
                 }
@@ -162,12 +224,29 @@ namespace SpiceItUp
             Console.WriteLine("=========================================");
             Console.WriteLine("Item ID\t Item Name\t Quantity\t Price");
             Console.WriteLine("=======\t =========\t ========\t =====");
+            decimal totalPrice = 0;
             for (int i = 0; i < customerItemID.Count; i++)
             {
                 string price = String.Format("{0:0.00}", customerPrice[i]);
                 Console.WriteLine(String.Format("{0, -8} {1, -15} {2, -15} {3, -16}",
                     customerItemID[i], customerItemName[i], customerQuantity[i], $"${price}"));
+                totalPrice = totalPrice + customerPrice[i];
             }
+            string stringTotalPrice = String.Format("{0:0.00}", totalPrice);
+            Console.WriteLine("=========================");
+            Console.WriteLine($"Your total is ${stringTotalPrice}");
+
+            StringBuilder createTransID = new StringBuilder();
+            Enumerable
+               .Range(65, 26)
+               .Select(e => ((char)e).ToString())
+               .Concat(Enumerable.Range(97, 26).Select(e => ((char)e).ToString()))
+               .Concat(Enumerable.Range(0, 10).Select(e => e.ToString()))
+               .OrderBy(e => Guid.NewGuid())
+               .Take(11)
+               .ToList().ForEach(e => createTransID.Append(e));
+            string transID = createTransID.ToString();
+            Console.ReadLine();
         }
     }
 }

@@ -4,8 +4,6 @@ VALUES ('ManagerKyler', 'ManagerPassword');
 INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee)
 VALUES (1, 'Kyler', 'Dennis', 4238886190, 'TRUE');
 
---DELETE FROM Employees WHERE EmployeeID = 1;
-
 INSERT StoreInfo (StoreName)
 VALUES ('Spice It Up Chattanooga'), ('Spice It Up Knoxville'), ('Spice It Up Nashville'), ('Spice It Up Memphis');
 

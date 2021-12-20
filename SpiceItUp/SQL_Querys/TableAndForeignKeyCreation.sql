@@ -23,8 +23,8 @@ CREATE TABLE TransactionHistory
     TransactionID INT IDENTITY (1, 1) PRIMARY KEY,
     UserID INT NOT NULL,
     StoreID INT NOT NULL,
-    "Timestamp" DATETIMEOFFSET NOT NULL DEFAULT (SYSDATETIMEOFFSET()),
-    IsStoreOrder VARCHAR(5) NOT NULL
+    IsStoreOrder VARCHAR(5) NOT NULL,
+    "Timestamp" NVARCHAR(25) NOT NULL
 )
 
 CREATE TABLE UserInformation
