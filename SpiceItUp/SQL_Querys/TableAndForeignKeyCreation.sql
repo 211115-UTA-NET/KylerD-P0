@@ -20,11 +20,11 @@ CREATE TABLE ItemDetails
 
 CREATE TABLE TransactionHistory
 (
-    TransactionID INT IDENTITY (1, 1) PRIMARY KEY,
+    TransactionID VARCHAR(50) PRIMARY KEY,
     UserID INT NOT NULL,
     StoreID INT NOT NULL,
     IsStoreOrder VARCHAR(5) NOT NULL,
-    "Timestamp" NVARCHAR(25) NOT NULL
+    Timestamp NVARCHAR(50) NOT NULL
 )
 
 CREATE TABLE UserInformation
@@ -45,7 +45,7 @@ CREATE TABLE StoreInventory
 
 CREATE TABLE CustomerTransactionDetails
 (
-    TransactionID INT,
+    TransactionID VARCHAR(50),
     ItemID INT NOT NULL,
     Quantity INT NOT NULL CHECK (Quantity <= 10),
     Price MONEY NOT NULL
@@ -53,7 +53,7 @@ CREATE TABLE CustomerTransactionDetails
 
 CREATE TABLE EmployeeOrderingDetails
 (
-    TransactionID INT,
+    TransactionID VARCHAR(50),
     ItemID INT NOT NULL,
     Quantity INT NOT NULL CHECK (Quantity <= 15)
 )
@@ -68,31 +68,11 @@ ALTER TABLE CustomerTransactionDetails ADD FOREIGN KEY (ItemID) REFERENCES ItemD
 ALTER TABLE EmployeeOrderingDetails ADD FOREIGN KEY (TransactionID) REFERENCES TransactionHistory(TransactionID);
 ALTER TABLE EmployeeOrderingDetails ADD FOREIGN KEY (ItemID) REFERENCES ItemDetails(ItemID);
 
-ALTER TABLE [dbo].[TransactionHistory] DROP CONSTRAINT [PK__Transact__55433A4B4A4E56FF] WITH ( ONLINE = OFF )
-GO
-ALTER TABLE [dbo].[TransactionHistory] DROP CONSTRAINT [FK__Transacti__Store__2BFE89A6]
-GO
-ALTER TABLE [dbo].[TransactionHistory] DROP CONSTRAINT [FK__Transacti__UserI__2B0A656D]
-GO
-ALTER TABLE [dbo].[StoreInfo] DROP CONSTRAINT [PK__StoreInf__3B82F0E171D92ED6] WITH ( ONLINE = OFF )
-GO
-ALTER TABLE [dbo].[StoreInfo] DROP CONSTRAINT [UQ__StoreInf__520DB652B6E00061]
-GO
-ALTER TABLE [dbo].[LoginManager] DROP CONSTRAINT [PK__LoginMan__1788CCACF9A84ECF] WITH ( ONLINE = OFF )
-GO
-ALTER TABLE [dbo].[LoginManager] DROP CONSTRAINT [UQ__LoginMan__536C85E4C8B5848F]
-GO
-ALTER TABLE [dbo].[ItemDetails] DROP CONSTRAINT [PK__ItemDeta__727E83EB9DC6258C] WITH ( ONLINE = OFF )
-GO
-ALTER TABLE [dbo].[ItemDetails] DROP CONSTRAINT [UQ__ItemDeta__4E4373F7C319DDE5]
-GO
-
 DROP TABLE LoginManager;
 DROP TABLE StoreInfo;
 DROP TABLE ItemDetails;
 DROP TABLE TransactionHistory;
-DROP TABLE Customers;
-DROP TABLE Employees;
+DROP TABLE UserInformation;
 DROP TABLE StoreInventory;
 DROP TABLE CustomerTransactionDetails;
 DROP TABLE EmployeeOrderingDetails;

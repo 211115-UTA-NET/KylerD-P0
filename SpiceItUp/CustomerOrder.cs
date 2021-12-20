@@ -13,6 +13,7 @@ namespace SpiceItUp
         private static int storeEntry;
         private static string? storeName;
         private static bool exit = false;
+        private static int userID;
 
         private static List<int> itemIDList = new List<int>();
         private static List<string> itemNameList = new List<string>();
@@ -24,8 +25,9 @@ namespace SpiceItUp
         private static List<int> customerQuantity = new List<int>();
         private static List<decimal> customerPrice = new List<decimal>();
 
-        public static void StoreSelection()
+        public static void StoreSelection(int myUserID)
         {
+            userID = myUserID;
             exit = false;
             while (exit == false)
             {
@@ -119,7 +121,7 @@ namespace SpiceItUp
                 }
                 Console.WriteLine("Enter an Item ID to add to your cart, or enter 0 to view your cart.");
                 Console.WriteLine("Type 'EXIT' to cancel your order and return to your account menu.");
-                while (true)
+                while (exit == false)
                 {
                     int itemToAdd;
                     string? adding = Console.ReadLine();
@@ -128,7 +130,7 @@ namespace SpiceItUp
                     if (validEntry == true && itemToAdd > -1 && itemToAdd < itemIDList.Count && inStockList[itemToAdd] != 0)
                     {
                         Console.WriteLine("Enter a quantity to add to cart:");
-                        while (true)
+                        while (exit == false)
                         {
                             string? quantityString = Console.ReadLine();
                             int quantity;
@@ -249,7 +251,7 @@ namespace SpiceItUp
                 Console.WriteLine("=========================");
                 Console.WriteLine("Enter an Item ID to remove it from your cart, or enter 0 to view your cart.");
                 Console.WriteLine("Type 'EXIT' to cancel your order and return to your account menu.");
-                while (true)
+                while (exit == false)
                 {
                     int itemToRemove;
                     string? removing = Console.ReadLine();
@@ -338,6 +340,81 @@ namespace SpiceItUp
             }
         }
 
+        private static void FinalizeTransaction()
+        {
+            StringBuilder createTransID = new StringBuilder();
+            Enumerable
+               .Range(65, 26)
+               .Select(e => ((char)e).ToString())
+               .Concat(Enumerable.Range(97, 26).Select(e => ((char)e).ToString()))
+               .Concat(Enumerable.Range(0, 10).Select(e => e.ToString()))
+               .OrderBy(e => Guid.NewGuid())
+               .Take(11)
+               .ToList().ForEach(e => createTransID.Append(e));
+            string transID = createTransID.ToString();
+
+            using SqlConnection connection = new(connectionString);
+            try
+            {
+                for (int i = 0; i < itemIDList.Count; i++)
+                {
+                    connection.Open();
+                    string updateStoreInv = "UPDATE StoreInventory SET InStock = @stock WHERE StoreID = @storeID AND ItemID = @itemID;";
+                    using SqlCommand newStoreInv = new(updateStoreInv, connection);
+                    newStoreInv.Parameters.Add("@stock", System.Data.SqlDbType.Int).Value = inStockList[i];
+                    newStoreInv.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+                    newStoreInv.Parameters.Add("@itemID", System.Data.SqlDbType.Int).Value = itemIDList[i];
+                    newStoreInv.ExecuteNonQuery();
+                    connection.Close();
+                }
+
+                connection.Open();
+                string addTransHistory = "INSERT TransactionHistory (TransactionID, UserID, StoreID, IsStoreOrder, Timestamp) " +
+                    "VALUES (@transID, @userID, @storeID, @isStoreOrder, @timestamp);";
+                using SqlCommand newTransHistory = new(addTransHistory, connection);
+                DateTime now = DateTime.Now;
+                string dateTime = now.ToString("F");
+                newTransHistory.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = transID;
+                newTransHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = userID;
+                newTransHistory.Parameters.Add("@storeID", System.Data.SqlDbType.Int).Value = storeEntry;
+                newTransHistory.Parameters.Add("@isStoreOrder", System.Data.SqlDbType.VarChar).Value = "FALSE";
+                newTransHistory.Parameters.Add("@timestamp", System.Data.SqlDbType.NVarChar).Value = dateTime;
+                newTransHistory.ExecuteNonQuery();
+                connection.Close();
+
+                for (int i = 0; i < customerItemID.Count; i++)
+                {
+                    connection.Open();
+                    string addTransDetails = "INSERT CustomerTransactionDetails (TransactionID, ItemID, Quantity, Price) " +
+                        "VALUES (@transID, @itemID, @quantity, @price);";
+                    using SqlCommand newTransDetails = new(addTransDetails, connection);
+                    newTransDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = transID;
+                    newTransDetails.Parameters.Add("@itemID", System.Data.SqlDbType.Int).Value = customerItemID[i];
+                    newTransDetails.Parameters.Add("@quantity", System.Data.SqlDbType.Int).Value = customerQuantity[i];
+                    newTransDetails.Parameters.Add("@price", System.Data.SqlDbType.Money).Value = customerPrice[i];
+                    newTransDetails.ExecuteNonQuery();
+                    connection.Close();
+                }
+
+                Console.WriteLine("Your order was successful!");
+                Console.WriteLine($"Your transaction ID number is: {transID}");
+
+                itemIDList.Clear();
+                itemNameList.Clear();
+                inStockList.Clear();
+                priceList.Clear();
+                customerItemID.Clear();
+                customerItemName.Clear();
+                customerQuantity.Clear();
+                customerPrice.Clear();
+                exit = true;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("There was an error processing your order. Our stock may have changed.");
+            }
+        }
+
         private static void ViewCustomerCart()
         {
             Console.WriteLine($"Cart for store {storeEntry}: {storeName}");
@@ -366,7 +443,10 @@ namespace SpiceItUp
                 bool validEntry = int.TryParse(mySelection, out userEntry);
                 if (validEntry == true && userEntry >= 1 && userEntry <= 4)
                 {
-                    break; //Break when valid
+                    if (userEntry == 3 && customerItemID.Count == 0)
+                        Console.WriteLine("You cannot checkout with an empty cart. Please select another option:");
+                    else
+                        break; //Break when valid
                 }
                 else
                     Console.WriteLine("Invalid selection. Please try again.");
@@ -381,7 +461,10 @@ namespace SpiceItUp
                     RemoveFromCart();
                     break;
                 case 3:
-
+                    Console.WriteLine("Are you sure? (Y/N)");
+                    string? check = Console.ReadLine();
+                    if ("Y" == check?.ToUpper())
+                        FinalizeTransaction();
                     break;
                 case 4:
                     itemIDList.Clear();
@@ -395,17 +478,6 @@ namespace SpiceItUp
                     exit = true;
                     break;
             }
-
-            StringBuilder createTransID = new StringBuilder();
-            Enumerable
-               .Range(65, 26)
-               .Select(e => ((char)e).ToString())
-               .Concat(Enumerable.Range(97, 26).Select(e => ((char)e).ToString()))
-               .Concat(Enumerable.Range(0, 10).Select(e => e.ToString()))
-               .OrderBy(e => Guid.NewGuid())
-               .Take(11)
-               .ToList().ForEach(e => createTransID.Append(e));
-            string transID = createTransID.ToString();
         }
     }
 }

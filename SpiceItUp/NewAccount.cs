@@ -155,7 +155,8 @@ namespace SpiceItUp
 
             // Add the customer's information to SQL
             connection.Open();
-            string addNewCustomer = $"INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee) VALUES (@customerID, @firstName, @lastName, @phoneNumber, @isEmployee);";
+            string addNewCustomer = $"INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee) " +
+                $"VALUES (@customerID, @firstName, @lastName, @phoneNumber, @isEmployee);";
             using SqlCommand newUserCreationCommand = new(addNewCustomer, connection);
             newUserCreationCommand.Parameters.Add("@customerID", System.Data.SqlDbType.Int).Value = finalIDGrab;
             newUserCreationCommand.Parameters.Add("@firstName", System.Data.SqlDbType.VarChar).Value = firstName;

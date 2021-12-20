@@ -8,7 +8,7 @@ namespace SpiceItUp
 {
     public class CustomerAccount
     {
-        protected int userID;
+        public int userID;
         protected string firstName;
         protected string lastName;
         protected double phoneNumber;
@@ -21,6 +21,13 @@ namespace SpiceItUp
             this.firstName = firstName;
             this.lastName = lastName;
             this.phoneNumber = phoneNumber;
+        }
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public CustomerAccount()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        {
+
         }
 
         public void UserOptions()
@@ -51,7 +58,7 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-                        SpiceItUp.CustomerOrder.StoreSelection();
+                        SpiceItUp.CustomerOrder.StoreSelection(userID);
                         break;
                     case 2:
 

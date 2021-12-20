@@ -8,7 +8,7 @@ INSERT StoreInfo (StoreName)
 VALUES ('Spice It Up Chattanooga'), ('Spice It Up Knoxville'), ('Spice It Up Nashville'), ('Spice It Up Memphis');
 
 INSERT ItemDetails (ItemName, ItemPrice)
-VALUES ('Basil', .96), ('Cinnamon', 2.98), ('Cumin', 1.04), ('Gralic Powder', 1.98), ('Nutmeg', 1.84),
+VALUES ('Basil', .96), ('Cinnamon', 2.98), ('Cumin', 1.04), ('Garlic Powder', 1.98), ('Nutmeg', 1.84),
 ('Oregano', 1.57), ('Paprika', 1.99), ('Parsley', .78), ('Rosemary', 1.98), ('Thyme', 1.94);
 
 INSERT StoreInventory (StoreID, ItemID, InStock)
