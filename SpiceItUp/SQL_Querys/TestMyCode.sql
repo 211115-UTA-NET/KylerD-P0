@@ -1,7 +1,8 @@
 SELECT * FROM UserInformation;
 SELECT * FROM LoginManager;
+SELECT * FROM ItemDetails;
 
-UPDATE StoreInventory SET InStock = 25 WHERE StoreID = 102;
+UPDATE StoreInventory SET InStock = 15;
 DELETE FROM TransactionHistory WHERE TransactionID = 'jpCLbc8Hm39';
 DELETE FROM CustomerTransactionHistory WHERE TransactionID = 'jpCLbc8Hm39';
 
@@ -13,7 +14,7 @@ INSERT TransactionHistory (TransactionID, UserID, StoreID, IsStoreOrder, timesta
 SELECT ItemDetails.ItemName, StoreInventory.InStock, ItemDetails.ItemPrice
 FROM StoreInventory JOIN ItemDetails
 ON StoreInventory.ItemID = ItemDetails.ItemID
-WHERE StoreInventory.StoreID = 102
+WHERE StoreInventory.StoreID = 105
 ORDER BY ItemDetails.ItemName;
 
 SELECT * FROM UserInformation WHERE UserID = 1;
@@ -25,3 +26,21 @@ SELECT UserID FROM LoginManager WHERE Username = 'ManagerKyler';
 SELECT * FROM TransactionHistory;
 SELECT * FROM CustomerTransactionDetails;
 SELECT * FROM StoreInventory;
+
+SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price)
+FROM TransactionHistory JOIN CustomerTransactionDetails
+ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID
+WHERE TransactionHistory.UserID = 2
+GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;
+
+SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, SUM(CustomerTransactionDetails.Price)
+FROM TransactionHistory JOIN StoreInfo
+ON TransactionHistory.StoreID = StoreInfo.StoreID
+JOIN CustomerTransactionDetails ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID
+WHERE TransactionHistory.UserID = 2 AND TransactionHistory.TransactionID = 'fVIUZDFzlum'
+GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp;
+
+SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price
+FROM CustomerTransactionDetails JOIN ItemDetails
+ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID
+WHERE CustomerTransactionDetails.TransactionID = 'jpCLbc8Hm39';

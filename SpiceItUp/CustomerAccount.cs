@@ -61,7 +61,7 @@ namespace SpiceItUp
                         SpiceItUp.CustomerOrder.StoreSelection(userID);
                         break;
                     case 2:
-
+                        SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID);
                         break;
                     case 3:
                         SpiceItUp.LocationInventory.StoreSelection();
