@@ -6,15 +6,27 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// A user directed to this class is flagged as a customer.
+    /// Customers are given options for how to proceed.
+    /// </summary>
     public class CustomerAccount
     {
-        public int userID;
+        protected int userID;
         protected string firstName;
         protected string lastName;
         protected double phoneNumber;
 
         private bool logout = false;
 
+        /// <summary>
+        /// Constructor to get the basic information from customer.
+        /// This information was pulled from the database when the customer logged in.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="phoneNumber"></param>
         public CustomerAccount(int userID, string firstName, string lastName, double phoneNumber)
         {
             this.userID = userID;
@@ -23,13 +35,9 @@ namespace SpiceItUp
             this.phoneNumber = phoneNumber;
         }
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public CustomerAccount()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        {
-
-        }
-
+        /// <summary>
+        /// Customers are given different options for how to proceed.
+        /// </summary>
         public void UserOptions()
         {
             while (logout == false)
@@ -54,19 +62,18 @@ namespace SpiceItUp
                         Console.WriteLine("Invalid selection. Please try again.");
                 }
 
-                //Console.WriteLine(userEntry);
                 switch (userEntry)
                 {
                     case 1:
-                        SpiceItUp.CustomerOrder.StoreSelection(userID);
+                        SpiceItUp.CustomerOrder.StoreSelection(userID); //Start a new order
                         break;
                     case 2:
-                        SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID);
+                        SpiceItUp.CustomerOrderHistory.CustomerTransactionHistory(userID); //View order history
                         break;
                     case 3:
-                        SpiceItUp.LocationInventory.StoreSelection();
+                        SpiceItUp.LocationInventory.StoreSelection(); //View store inventory
                         break;
-                    case 4:
+                    case 4: //Log out of account
                         Console.WriteLine("Goodbye!");
                         logout = true;
                         break;

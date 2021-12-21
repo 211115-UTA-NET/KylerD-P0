@@ -8,6 +8,9 @@ using System.Data.SqlClient;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// User is able to begin creating an account with basic information.
+    /// </summary>
     public class NewAccount
     {
         private static string? firstName = "";
@@ -16,32 +19,49 @@ namespace SpiceItUp
         private static string? newUsername = "";
         private static string? newPassword = "";
 
+        private static bool exit = false;
+
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
-
+        /// <summary>
+        /// User is prompted to begin creating an account.
+        /// If account fails to write to database, throw an error
+        /// </summary>
         public static void CreateAnAccount()
         {
-            Console.WriteLine("Lets create an account!");
-            CustomerInformation();
-            CustomerLoginInformation();
-            try
+            exit = false;
+            Console.WriteLine("Lets create an account! Type 'EXIT' to return to the main menu.");
+            if (exit == false)
+                CustomerInformation();
+            if (exit == false)
+                CustomerLoginInformation();
+            if (exit == false)
             {
-                AddNewCustomer();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Looks like there was an error. You may have used a username that already exists. Please try again.");
+                try
+                {
+                    AddNewCustomer();
+                }
+                catch (Exception) //Accounts will not be created if there is a duplicate username
+                {
+                    Console.WriteLine("Looks like there was an error. You may have used a username that already exists. Please try again.");
+                }
             }
         }
 
-        private static void CustomerInformation()
+        /// <summary>
+        /// Customer is prompted to enter basic personal information.
+        /// Customer must verify information enetered is true
+        /// </summary>
+        public static void CustomerInformation()
         {
-            while (true) //Create an account FIRST name
+            while (exit == false) //Create an account FIRST name
             {
                 Console.WriteLine("Please enter your first name:");
                 firstName = Console.ReadLine();
                 if (firstName == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (firstName == "EXIT")
+                    exit = true;
                 else
                 {
                     Console.WriteLine($"Is {firstName} your first name? (Y/N)");
@@ -51,12 +71,14 @@ namespace SpiceItUp
                 }
             }
 
-            while (true) //Create an account LAST name
+            while (exit == false) //Create an account LAST name
             {
                 Console.WriteLine("Please enter your last name:");
                 lastName = Console.ReadLine();
                 if (lastName == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (lastName == "EXIT")
+                    exit = true;
                 else
                 {
                     Console.WriteLine($"Is {lastName} your last name? (Y/N)");
@@ -66,12 +88,14 @@ namespace SpiceItUp
                 }
             }
 
-            while (true) //Create a phone number
+            while (exit == false) //Create a phone number
             {
                 Console.WriteLine("Please enter a valid phone number:");
                 phoneNumber = Console.ReadLine();
                 if (phoneNumber == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (phoneNumber == "EXIT")
+                    exit = true;
                 else if (phoneNumber?.Length < 9)
                 {
                     Console.WriteLine("The phone number you entered is not long enough. Please enter a new phone number.");
@@ -88,14 +112,20 @@ namespace SpiceItUp
             }
         }
 
-        private static void CustomerLoginInformation()
+        /// <summary>
+        /// Customer is prompted to enter login information.
+        /// Customer must verify information enetered is true.
+        /// </summary>
+        public static void CustomerLoginInformation()
         {
-            while (true) //Create an account username
+            while (exit == false) //Create an account username
             {
                 Console.WriteLine("Please enter your username:");
                 newUsername = Console.ReadLine();
                 if (newUsername == "")
                     Console.WriteLine("No entry. Please try again");
+                else if (newUsername == "EXIT")
+                    exit = true;
                 else
                 {
                     Console.WriteLine($"Is {newUsername} your username? (Y/N)");
@@ -105,13 +135,15 @@ namespace SpiceItUp
                 }
             }
 
-            while (true) //Create an account password
+            while (exit == false) //Create an account password
             {
                 Console.WriteLine("Please enter your password (must be at least 8 characters long):");
                 newPassword = Console.ReadLine();
                 if (newPassword == "")
                     Console.WriteLine("No entry. Please try again");
-                else if (newPassword?.Length < 8)
+                else if (newPassword == "EXIT")
+                    exit = true;
+                else if (newPassword?.Length < 8) //Password must be at least 8 characters long
                 {
                     Console.WriteLine("Password is not long enough. Please enter a new password.");
                 }
@@ -119,15 +151,21 @@ namespace SpiceItUp
                 {
                     Console.WriteLine("Please re-enter your password for verification:");
                     string? validPassword = Console.ReadLine();
-                    if (validPassword != "" && newPassword == validPassword && newPassword?.Length >= 8)
+                    if (validPassword != "" && newPassword == validPassword && newPassword?.Length >= 8) //Re enter password for verification
                         break;
+                    else if (validPassword == "EXIT")
+                        exit = true;
                     else
                         Console.WriteLine("Passwords did not match. Please try again.");
                 }
             }
         }
 
-        private static void AddNewCustomer()
+        /// <summary>
+        /// The information entered by user is written to our database
+        /// This information can be pulled and used to login to an account when entered in correctly
+        /// </summary>
+        public static void AddNewCustomer()
         {
             using SqlConnection connection = new(connectionString);
 
@@ -153,7 +191,7 @@ namespace SpiceItUp
             }
             connection.Close();
 
-            // Add the customer's information to SQL
+            // Add the customer's personal information to SQL
             connection.Open();
             string addNewCustomer = $"INSERT UserInformation (UserID, FirstName, LastName, PhoneNumber, IsEmployee) " +
                 $"VALUES (@customerID, @firstName, @lastName, @phoneNumber, @isEmployee);";

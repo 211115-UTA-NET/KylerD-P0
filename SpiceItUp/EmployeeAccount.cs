@@ -31,7 +31,8 @@ namespace SpiceItUp
                 Console.WriteLine("1: View orders by customer name");
                 Console.WriteLine("2: View orders by store number");
                 Console.WriteLine("3: View store inventory");
-                Console.WriteLine("4: Log out");
+                Console.WriteLine("4: Lookup customers by name");
+                Console.WriteLine("5: Log out");
 
                 int userEntry;
 
@@ -39,7 +40,7 @@ namespace SpiceItUp
                 {
                     string? mySelection = Console.ReadLine();
                     bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (validEntry == true && userEntry >= 1 && userEntry <= 4)
+                    if (validEntry == true && userEntry >= 1 && userEntry <= 5)
                     {
                         break; //Break when valid
                     }
@@ -60,6 +61,9 @@ namespace SpiceItUp
                         SpiceItUp.LocationInventory.StoreSelection();
                         break;
                     case 4:
+                        SpiceItUp.CustomerLookup.CustomerSearchOptions();
+                        break;
+                    case 5:
                         Console.WriteLine("Goodbye!");
                         logout = true;
                         break;

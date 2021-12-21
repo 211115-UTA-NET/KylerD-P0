@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// Customers and employees can view a store's inventory.
+    /// Customers can view the store's inventory before they begin an order.
+    /// </summary>
     public class LocationInventory
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
         private static int storeEntry;
 
+        /// <summary>
+        /// Print off a list of stores by pulling store information from the database.
+        /// The user can then sleect a store to view it's inventory
+        /// </summary>
         public static void StoreSelection()
         {
             while (true)
@@ -45,24 +53,29 @@ namespace SpiceItUp
 
                 try
                 {
-                    PullStoreInfo();
+                    PullStoreInfo(); //Can we pull the store's inventory information based on user input?
                 }
-                catch (Exception)
+                catch (Exception) //If we fail to pull store inventory
                 {
                     Console.WriteLine("Unable to pull store information");
                 }
 
-                Console.WriteLine("Would you like to check another store's inventory? (Y/N)");
+                Console.WriteLine("Would you like to check another store's inventory? (Y/N)"); //If customer wishes to check another store's inventory, reprint store lists
                 string? checkNewStore = Console.ReadLine();
-                if ("Y" != checkNewStore?.ToUpper())
+                if ("Y" != checkNewStore?.ToUpper()) //If customer does not wish to check another store's inventory, break the loop and return to account main menu
                     break;
             }
         }
 
+        /// <summary>
+        /// We will attempt to pull the inventory from entered store
+        /// Store inventory is pulled from database and formatted accordingly
+        /// </summary>
         private static void PullStoreInfo()
         {
             using SqlConnection connection = new(connectionString);
 
+            //Pull the selected store information
             connection.Open();
             string getSelectedStore = $"SELECT * FROM StoreInfo WHERE StoreID = @storeID;";
             using SqlCommand readSelectedStore = new(getSelectedStore, connection);
@@ -74,10 +87,12 @@ namespace SpiceItUp
             }
             connection.Close();
 
+            //Formatting
             Console.WriteLine("=================================");
             Console.WriteLine("Item Name\t In Stock\t Price");
             Console.WriteLine("=========\t ========\t =====");
 
+            //Pull and print the store's inventory
             connection.Open();
             string getStoreInventory = "SELECT ItemDetails.ItemName, StoreInventory.InStock, ItemDetails.ItemPrice " +
                 "FROM StoreInventory JOIN ItemDetails " +

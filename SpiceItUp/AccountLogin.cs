@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// User will enter their login information
+    /// If valid, the user will be able to login to their account
+    /// </summary>
     public class AccountLogin
     {
         private static int userID = 0;
@@ -20,6 +24,9 @@ namespace SpiceItUp
 
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
+        /// <summary>
+        /// Customer is prompted to enter their username and password
+        /// </summary>
         public static void LoginManager()
         {
             Console.WriteLine("Lets get you logged in!");
@@ -48,7 +55,7 @@ namespace SpiceItUp
 
             try
             {
-                TestEntries();
+                TestEntries(); //Can we log into an account?
             }
             catch (Exception)
             {
@@ -71,7 +78,12 @@ namespace SpiceItUp
                 Console.WriteLine("Invalid account. Please try again");
         }
 
-        private static void TestEntries()
+        /// <summary>
+        /// Based on information in our database, are the entries linked to an accounnt?
+        /// If so, customer is logged in.
+        /// If anything fails, we return to the main program class
+        /// </summary>
+        public static void TestEntries()
         {
             using SqlConnection connection = new(connectionString);
 

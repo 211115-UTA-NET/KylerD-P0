@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// Customers can view their order history
+    /// </summary>
     public class CustomerOrderHistory
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
@@ -16,6 +19,11 @@ namespace SpiceItUp
         private static List<string> transList = new List<string>();
         private static int userEntry;
 
+        /// <summary>
+        /// The basic details of a customers transaction are automatically printed off.
+        /// Customers can select a transaction to view it more in detail
+        /// </summary>
+        /// <param name="myUserID"></param>
         public static void CustomerTransactionHistory(int myUserID)
         {
             userID = myUserID;
@@ -26,6 +34,7 @@ namespace SpiceItUp
 
                 using SqlConnection connection = new(connectionString);
 
+                //Format the basic information of each transaction
                 Console.WriteLine("Here is your order History:");
                 Console.WriteLine("==============================");
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
@@ -33,6 +42,7 @@ namespace SpiceItUp
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
                         "=====", "==============", "========", "==========="));
 
+                //Print off the basic information of order history, if their is at least one transaction
                 connection.Open();
                 string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
                     "FROM TransactionHistory JOIN CustomerTransactionDetails " +
@@ -52,40 +62,48 @@ namespace SpiceItUp
                 }
                 connection.Close();
 
-                if (transList.Count == 0)
+                if (transList.Count == 0) //If there are no previous transactions
                 {
                     Console.WriteLine("Returning to your menu. You do not have a transaction history.");
                     break;
                 }
+
                 Console.WriteLine($"To view an order's specific details, enter the Entry number.");
                 Console.WriteLine("Otherwise, enter 0 to exit.");
 
+                //User can select a transaction from the list to view more details
                 while (true)
                 {
                     string? mySelection = Console.ReadLine();
                     bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (transList.Count >= userEntry && userEntry > 0)
+                    if (transList.Count >= userEntry && userEntry > 0) //If entery is valid
                     {
-                        DetailedTransaction();
+                        DetailedTransaction(); //Print the details of the transaction
                         break;
                     }
-                    else if (userEntry == 0)
+                    else if (userEntry == 0) //If customer wishes to exit
                     {
                         exit = true;
                         break;
                     }
-                    else
+                    else //If there is an unknown error
                         Console.WriteLine("Invalid selection. Please try again.");
                 }
             }
         }
 
+        /// <summary>
+        /// Based on customer entry, a transactions details are printed more in depth.
+        /// Information is pulled from the databases to retrieve all information
+        /// </summary>
         public static void DetailedTransaction()
         {
             int entryList = userEntry - 1;
             string detailedTransID = transList[entryList];
 
             using SqlConnection connection = new(connectionString);
+
+            //Print off more details of the selected transaction with correct formatting
             connection.Open();
             string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
                 "TransactionHistory.Timestamp, SUM(CustomerTransactionDetails.Price) " +
@@ -114,6 +132,7 @@ namespace SpiceItUp
             Console.WriteLine("Item Name\t Quantity\t Price");
             Console.WriteLine("=========\t ========\t =====");
 
+            //Print off item details contained within transactions
             connection.Open();
             string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
                 "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
@@ -131,6 +150,7 @@ namespace SpiceItUp
             connection.Close();
             Console.WriteLine("Press 'ENTER' to continue...");
             Console.ReadLine();
+            //Customer is returned to transaction list
         }
     }
 }
