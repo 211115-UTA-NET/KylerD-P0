@@ -124,7 +124,7 @@ namespace SpiceItUp
             while(detailReader.Read())
             {
                 string price = String.Format("{0:0.00}", detailReader.GetDecimal(2));
-                Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
+                Console.WriteLine(String.Format("{0, -16} {1, -15} {2, -16}",
                 detailReader.GetString(0), detailReader.GetInt32(1), $"${price}"));
             }
             Console.WriteLine("==============================");

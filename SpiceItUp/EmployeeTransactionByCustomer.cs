@@ -160,7 +160,7 @@ namespace SpiceItUp
                 "WHERE TransactionHistory.UserID = @userID AND TransactionHistory.TransactionID = @transID " +
                 "GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp;";
             using SqlCommand readOpening = new(getOpening, connection);
-            readOpening.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = userID;
+            readOpening.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerIDList[userEntry];
             readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
             using SqlDataReader myReader = readOpening.ExecuteReader();
             while (myReader.Read())

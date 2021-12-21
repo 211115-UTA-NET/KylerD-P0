@@ -54,7 +54,7 @@ namespace SpiceItUp
                         SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
                         break;
                     case 2:
-
+                        SpiceItUp.EmployeeTransactionByStore.StoreSelection();
                         break;
                     case 3:
                         SpiceItUp.LocationInventory.StoreSelection();

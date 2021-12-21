@@ -44,3 +44,29 @@ SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransa
 FROM CustomerTransactionDetails JOIN ItemDetails
 ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID
 WHERE CustomerTransactionDetails.TransactionID = 'jpCLbc8Hm39';
+
+SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';
+
+SELECT * FROM TransactionHistory;
+SELECT * FROM CustomerTransactionDetails;
+SELECT * FROM UserInformation;
+SELECT * FROM StoreInventory;
+
+SELECT TransactionHistory.TransactionID, UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price) 
+FROM TransactionHistory JOIN UserInformation
+ON TransactionHistory.UserID = UserInformation.UserID
+JOIN CustomerTransactionDetails
+ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID
+WHERE TransactionHistory.StoreID = 102
+GROUP BY TransactionHistory.TransactionID, UserInformation.FirstName, UserInformation.LastName;
+
+SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp,
+UserInformation.FirstName, UserInformation.LastName, SUM(CustomerTransactionDetails.Price)
+FROM TransactionHistory JOIN StoreInfo
+ON TransactionHistory.StoreID = StoreInfo.StoreID
+JOIN CustomerTransactionDetails
+ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID
+JOIN UserInformation
+ON Userinformation.UserID = TransactionHistory.UserID
+WHERE TransactionHistory.TransactionID = @transID
+GROUP BY TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, TransactionHistory.Timestamp, UserInformation.FirstName, UserInformation.LastName;
