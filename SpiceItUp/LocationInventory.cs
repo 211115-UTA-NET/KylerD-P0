@@ -35,7 +35,7 @@ namespace SpiceItUp
                 {
                     string? storeSelection = Console.ReadLine();
                     bool validEntry = int.TryParse(storeSelection, out storeEntry);
-                    if (validEntry == true && storeEntry > 100)
+                    if (validEntry == true && storeEntry > 100 && storeEntry < 105)
                     {
                         break; //Break when valid
                     }

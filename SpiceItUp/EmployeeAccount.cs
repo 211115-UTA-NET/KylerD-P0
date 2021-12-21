@@ -28,8 +28,8 @@ namespace SpiceItUp
             while (logout == false)
             {
                 Console.WriteLine($"Welcome, employee {firstName} {lastName[0]}! What would you like to do?");
-                Console.WriteLine("1: Start a new order");
-                Console.WriteLine("2: View order history");
+                Console.WriteLine("1: View orders by customer name");
+                Console.WriteLine("2: View orders by store number");
                 Console.WriteLine("3: View store inventory");
                 Console.WriteLine("4: Log out");
 
@@ -51,7 +51,7 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-
+                        SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
                         break;
                     case 2:
 

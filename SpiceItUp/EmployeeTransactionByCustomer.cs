@@ -7,66 +7,66 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
-    public class CustomerOrderHistory
+    public class EmployeeTransactionByCustomer
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
         private static int userID;
         private static bool exit = false;
+        private static bool goBack = false;
+        private static List<int> customerIDList = new List<int>();
+        private static List<string> customerFirstNameList = new List<string>();
+        private static List<string> customerLastNameList = new List<string>();
         private static List<string> transList = new List<string>();
         private static int userEntry;
+        private static int userEntry2;
 
-        public static void CustomerTransactionHistory(int myUserID)
+
+        public static void SelectACustomer()
         {
-            userID = myUserID;
             exit = false;
             while (exit == false)
             {
-                transList.Clear();
+                customerIDList.Clear();
+                customerFirstNameList.Clear();
+                customerLastNameList.Clear();
 
                 using SqlConnection connection = new(connectionString);
 
-                Console.WriteLine("Here is your order History:");
+                Console.WriteLine("Here is the customer list:");
                 Console.WriteLine("==============================");
-                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                        "Entry", "Transaction ID", "Store ID", "Total Price"));
-                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                        "=====", "==============", "========", "==========="));
+                Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
+                        "Entry", "First Name", "Last Name", "Phone Number"));
+                Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
+                        "=====", "==========", "=========", "============"));
 
                 connection.Open();
-                string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
-                    "FROM TransactionHistory JOIN CustomerTransactionDetails " +
-                    "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
-                    "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
-                using SqlCommand orderHistory = new(getOrderHistory, connection);
-                orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = userID;
-                using SqlDataReader reader = orderHistory.ExecuteReader();
+                string getCustomerList = "SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';";
+                using SqlCommand readCustomerList = new(getCustomerList, connection);
+                using SqlDataReader readCustomers = readCustomerList.ExecuteReader();
                 int entry = 1;
-                while(reader.Read())
+                while (readCustomers.Read())
                 {
-                    transList.Add(reader.GetString(0));
-                    string price = String.Format("{0:0.00}", reader.GetDecimal(2));
-                    Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
-                        entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
+                    customerIDList.Add(readCustomers.GetInt32(0));
+                    customerFirstNameList.Add(readCustomers.GetString(1));
+                    customerLastNameList.Add(readCustomers.GetString(2));
+                    Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
+                        entry, readCustomers.GetString(1), readCustomers.GetString(2), readCustomers.GetInt64(3)));
                     entry++;
                 }
                 connection.Close();
 
-                if (transList.Count == 0)
-                {
-                    Console.WriteLine("Returning to your menu. You do not have a transaction history.");
-                    break;
-                }
-                Console.WriteLine($"To view an order's specific details, enter the Entry number.");
+                Console.WriteLine($"To view a customer's order history, enter the Entry number.");
                 Console.WriteLine("Otherwise, enter 0 to exit.");
 
                 while (true)
                 {
                     string? mySelection = Console.ReadLine();
                     bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (transList.Count >= userEntry && userEntry > 0)
+                    if (customerIDList.Count >= userEntry && userEntry > 0)
                     {
-                        DetailedTransaction();
+                        userEntry--;
+                        CustomerTransactionHistory();
                         break;
                     }
                     else if (userEntry == 0)
@@ -80,9 +80,73 @@ namespace SpiceItUp
             }
         }
 
+        public static void CustomerTransactionHistory()
+        {
+            goBack = false;
+
+            while (goBack == false)
+            {
+                transList.Clear();
+
+                using SqlConnection connection = new(connectionString);
+
+                Console.WriteLine($"Here is {customerFirstNameList[userEntry]} {customerLastNameList[userEntry]}'s History:");
+                Console.WriteLine("==============================");
+                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+                        "Entry", "Transaction ID", "Store ID", "Total Price"));
+                Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+                        "=====", "==============", "========", "==========="));
+
+                connection.Open();
+                string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
+                    "FROM TransactionHistory JOIN CustomerTransactionDetails " +
+                    "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
+                    "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
+                using SqlCommand orderHistory = new(getOrderHistory, connection);
+                orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerIDList[userEntry];
+                using SqlDataReader reader = orderHistory.ExecuteReader();
+                int entry = 1;
+                while (reader.Read())
+                {
+                    transList.Add(reader.GetString(0));
+                    string price = String.Format("{0:0.00}", reader.GetDecimal(2));
+                    Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
+                        entry, reader.GetString(0), reader.GetInt32(1), $"${price}"));
+                    entry++;
+                }
+                connection.Close();
+
+                if (transList.Count == 0)
+                {
+                    Console.WriteLine("Going back. This customer does not have a transaction history.");
+                    break;
+                }
+                Console.WriteLine($"To view an order's specific details, enter the Entry number.");
+                Console.WriteLine("Otherwise, enter 0 to go back.");
+
+                while (true)
+                {
+                    string? mySelection = Console.ReadLine();
+                    bool validEntry = int.TryParse(mySelection, out userEntry2);
+                    if (transList.Count >= userEntry2 && userEntry2 > 0)
+                    {
+                        DetailedTransaction();
+                        break;
+                    }
+                    else if (userEntry2 == 0)
+                    {
+                        goBack = true;
+                        break;
+                    }
+                    else
+                        Console.WriteLine("Invalid selection. Please try again.");
+                }
+            }
+        }
+
         public static void DetailedTransaction()
         {
-            int entryList = userEntry - 1;
+            int entryList = userEntry2 - 1;
             string detailedTransID = transList[entryList];
 
             using SqlConnection connection = new(connectionString);
@@ -99,7 +163,7 @@ namespace SpiceItUp
             readOpening.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = userID;
             readOpening.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
             using SqlDataReader myReader = readOpening.ExecuteReader();
-            while(myReader.Read())
+            while (myReader.Read())
             {
                 string price = String.Format("{0:0.00}", myReader.GetDecimal(4));
                 Console.WriteLine("==============================");
@@ -121,7 +185,7 @@ namespace SpiceItUp
             using SqlCommand readDetails = new(getDetails, connection);
             readDetails.Parameters.Add("@transID", System.Data.SqlDbType.VarChar).Value = detailedTransID;
             using SqlDataReader detailReader = readDetails.ExecuteReader();
-            while(detailReader.Read())
+            while (detailReader.Read())
             {
                 string price = String.Format("{0:0.00}", detailReader.GetDecimal(2));
                 Console.WriteLine(String.Format("{0, -16} {1, -16} {2, -16}",
