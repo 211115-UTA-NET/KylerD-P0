@@ -10,7 +10,7 @@ namespace SpiceItUp
     /// <summary>
     /// Employees can lookup a customers transaction based on what store it was ordered from
     /// </summary>
-    public class EmployeeTransactionByStore
+    public class EmployeeTransactionByStore : IViewTransaction
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
@@ -60,7 +60,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(storeSelection, out storeEntry);
                     if (validEntry == true && storeEntry > 100 && storeEntry < 105) //If selected store is valid
                     {
-                        StoreTransactionHistory(); //Print off transactions in the database from entered store
+                        TransactionHistory(); //Print off transactions in the database from entered store
                         break;
                     }
                     else //If there is an unknown error
@@ -78,7 +78,7 @@ namespace SpiceItUp
         /// The basic transaction information is printed for the selected store.
         /// The employee has the option to view a transaction more in depth
         /// </summary>
-        public static void StoreTransactionHistory()
+        public static void TransactionHistory()
         {
             int selectedStore = storeEntry - 101;
             exit = false;

@@ -10,11 +10,10 @@ namespace SpiceItUp
     /// <summary>
     /// Employees can lookup a customers transaction based on a list of customers
     /// </summary>
-    public class EmployeeTransactionByCustomer
+    public class EmployeeTransactionByCustomer : IViewTransaction
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
-        private static int userID;
         private static bool exit = false;
         private static bool goBack = false;
         private static int userEntry;
@@ -77,7 +76,7 @@ namespace SpiceItUp
                     if (customerIDList.Count >= userEntry && userEntry > 0) //If employee chooses a valid customer
                     {
                         userEntry--;
-                        CustomerTransactionHistory(); //Print customer's transaction history
+                        TransactionHistory(); //Print customer's transaction history
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to return to account main menu
@@ -95,7 +94,7 @@ namespace SpiceItUp
         /// Once the employee chooses a customer, that customer's transaction list is printed off.
         /// The employee can choose to view a transaction in more details if they wish
         /// </summary>
-        public static void CustomerTransactionHistory()
+        public static void TransactionHistory()
         {
             goBack = false;
 
