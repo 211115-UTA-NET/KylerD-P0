@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// A user directed to this class is flagged as an employee.
+    /// Employees are given options for how to proceed.
+    /// </summary>
     public class EmployeeAccount
     {
         protected int userID;
@@ -15,6 +19,14 @@ namespace SpiceItUp
 
         private bool logout = false;
 
+        /// <summary>
+        /// Constructor to get the basic information from employee.
+        /// This information was pulled from the database when the employee logged in.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="phoneNumber"></param>
         public EmployeeAccount(int userID, string firstName, string lastName, double phoneNumber)
         {
             this.userID = userID;
@@ -23,6 +35,9 @@ namespace SpiceItUp
             this.phoneNumber = phoneNumber;
         }
 
+        /// <summary>
+        /// Customers are given different options for how to proceed.
+        /// </summary>
         public void UserOptions()
         {
             while (logout == false)
@@ -48,22 +63,21 @@ namespace SpiceItUp
                         Console.WriteLine("Invalid selection. Please try again.");
                 }
 
-                //Console.WriteLine(userEntry);
                 switch (userEntry)
                 {
-                    case 1:
+                    case 1: //View order histories by customer name
                         SpiceItUp.EmployeeTransactionByCustomer.SelectACustomer();
                         break;
-                    case 2:
+                    case 2: //View order histories by store 
                         SpiceItUp.EmployeeTransactionByStore.StoreSelection();
                         break;
-                    case 3:
+                    case 3: //View a stores inventory
                         SpiceItUp.LocationInventory.StoreSelection();
                         break;
-                    case 4:
+                    case 4: //Pull a customer's account information by looking up their name
                         SpiceItUp.CustomerLookup.CustomerSearchOptions();
                         break;
-                    case 5:
+                    case 5: //Log out of the employye account and return to the login page
                         Console.WriteLine("Goodbye!");
                         logout = true;
                         break;

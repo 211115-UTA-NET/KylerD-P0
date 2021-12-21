@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// Employees can pull a customers information by looking up their name
+    /// All information is pulled from the database
+    /// </summary>
     public class CustomerLookup
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
 
         private static bool exit = false;
+
+        /// <summary>
+        /// Employee chooses how they would like to lookup the customer (first or last name)
+        /// </summary>
         public static void CustomerSearchOptions()
         {
             while (exit == false)
@@ -39,32 +47,35 @@ namespace SpiceItUp
                 switch (userEntry)
                 {
                     case 1:
-                        SearchByFirstName();
+                        SearchByFirstName(); //If employee chooses first name
                         break;
                     case 2:
-                        SearchByLastName();
+                        SearchByLastName(); //If employee chooses last name
                         break;
-                    case 3:
+                    case 3: //Exit and return to account menu
                         exit = true;
                         break;
                 }
             }
         }
 
-        private static void SearchByFirstName()
+        /// <summary>
+        /// The employye can search the database by entering a first name
+        /// </summary>
+        public static void SearchByFirstName()
         {
             while (true)
             {
                 Console.WriteLine("Enter a first name:");
                 string? firstName = Console.ReadLine();
-                if (firstName == null)
+                if (firstName == null) //If entry is null
                 {
                     Console.WriteLine("Invalid entry. Please try again");
                 }
                 else
                 {
                     int test = 0;
-                    try
+                    try //Try to pull customer information
                     {
                         using SqlConnection connection = new(connectionString);
 
@@ -74,6 +85,7 @@ namespace SpiceItUp
                         Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
                                 "=======", "=========", "=========", "============", "============"));
 
+                        //Pull customer information matching first name entered
                         connection.Open();
                         string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
                             "WHERE FirstName = @firstName ORDER BY LastName;";
@@ -89,31 +101,34 @@ namespace SpiceItUp
                         Console.WriteLine("==============================");
                         break;
                     }
-                    catch (Exception)
+                    catch (Exception) //If we run into an error while accessing database
                     {
                         Console.WriteLine("There was an error retrieving the customer information.");
                     }
-                    if (test == 0)
+                    if (test == 0) //If there are no customers that match the first name entered
                         Console.WriteLine("There are no customers with that first name. Please try again.");
                     break;
                 }
             }
         }
 
-        private static void SearchByLastName()
+        /// <summary>
+        /// The employye can search the database by entering a last name
+        /// </summary>
+        public static void SearchByLastName()
         {
             while (true)
             {
                 Console.WriteLine("Enter a last name:");
                 string? lastName = Console.ReadLine();
-                if (lastName == null)
+                if (lastName == null) //If entry is null
                 {
                     Console.WriteLine("Invalid entry. Please try again");
                 }
                 else
                 {
                     int test = 0;
-                    try
+                    try //Try to pull customer information
                     {
                         using SqlConnection connection = new(connectionString);
 
@@ -123,6 +138,7 @@ namespace SpiceItUp
                         Console.WriteLine(String.Format("{0, -10} {1, -15} {2, -15} {3, -15} {4, -15}",
                                 "=======", "=========", "=========", "============", "============"));
 
+                        //Pull customer information matching last name entered
                         connection.Open();
                         string customerSearch = "SELECT UserID, FirstName, LastName, PhoneNumber, IsEmployee FROM UserInformation " +
                             "WHERE LastName = @lastName ORDER BY LastName;";
@@ -138,11 +154,11 @@ namespace SpiceItUp
                         Console.WriteLine("==============================");
                         break;
                     }
-                    catch (Exception)
+                    catch (Exception) //If we run into an error while accessing database
                     {
                         Console.WriteLine("There was an error retrieving the customer information.");
                     }
-                    if (test == 0)
+                    if (test == 0) //If there are no customers that match the last name entered
                         Console.WriteLine("There are no customers with that last name. Please try again.");
                     break;
                 }

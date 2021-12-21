@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SpiceItUp
 {
+    /// <summary>
+    /// Employees can lookup a customers transaction based on a list of customers
+    /// </summary>
     public class EmployeeTransactionByCustomer
     {
         private static string connectionString = File.ReadAllText("D:/Revature/ConnectionStrings/SpiceItUp-P0-KylerD.txt");
@@ -14,14 +17,20 @@ namespace SpiceItUp
         private static int userID;
         private static bool exit = false;
         private static bool goBack = false;
+        private static int userEntry;
+        private static int userEntry2;
+
+        /// <summary>
+        /// Customer's basic info is stored in lists
+        /// </summary>
         private static List<int> customerIDList = new List<int>();
         private static List<string> customerFirstNameList = new List<string>();
         private static List<string> customerLastNameList = new List<string>();
         private static List<string> transList = new List<string>();
-        private static int userEntry;
-        private static int userEntry2;
 
-
+        /// <summary>
+        /// The database prints off a list of customers for the employee to choose from
+        /// </summary>
         public static void SelectACustomer()
         {
             exit = false;
@@ -33,6 +42,7 @@ namespace SpiceItUp
 
                 using SqlConnection connection = new(connectionString);
 
+                //Format our customer list
                 Console.WriteLine("Here is the customer list:");
                 Console.WriteLine("==============================");
                 Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
@@ -40,6 +50,7 @@ namespace SpiceItUp
                 Console.WriteLine(String.Format("{0, -7} {1, -15} {2, -15} {3, -10}",
                         "=====", "==========", "=========", "============"));
 
+                //Pull a list of customers from the database
                 connection.Open();
                 string getCustomerList = "SELECT UserID, FirstName, LastName, PhoneNumber FROM UserInformation WHERE IsEmployee = 'FALSE';";
                 using SqlCommand readCustomerList = new(getCustomerList, connection);
@@ -63,23 +74,27 @@ namespace SpiceItUp
                 {
                     string? mySelection = Console.ReadLine();
                     bool validEntry = int.TryParse(mySelection, out userEntry);
-                    if (customerIDList.Count >= userEntry && userEntry > 0)
+                    if (customerIDList.Count >= userEntry && userEntry > 0) //If employee chooses a valid customer
                     {
                         userEntry--;
-                        CustomerTransactionHistory();
+                        CustomerTransactionHistory(); //Print customer's transaction history
                         break;
                     }
-                    else if (userEntry == 0)
+                    else if (userEntry == 0) //If customer wishes to return to account main menu
                     {
                         exit = true;
                         break;
                     }
-                    else
+                    else //If we get an unknown error
                         Console.WriteLine("Invalid selection. Please try again.");
                 }
             }
         }
 
+        /// <summary>
+        /// Once the employee chooses a customer, that customer's transaction list is printed off.
+        /// The employee can choose to view a transaction in more details if they wish
+        /// </summary>
         public static void CustomerTransactionHistory()
         {
             goBack = false;
@@ -90,6 +105,7 @@ namespace SpiceItUp
 
                 using SqlConnection connection = new(connectionString);
 
+                //Format our transaction list
                 Console.WriteLine($"Here is {customerFirstNameList[userEntry]} {customerLastNameList[userEntry]}'s History:");
                 Console.WriteLine("==============================");
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
@@ -97,6 +113,7 @@ namespace SpiceItUp
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
                         "=====", "==============", "========", "==========="));
 
+                //Get transaction list from database and print
                 connection.Open();
                 string getOrderHistory = "SELECT TransactionHistory.TransactionID, TransactionHistory.StoreID, SUM(CustomerTransactionDetails.Price) " +
                     "FROM TransactionHistory JOIN CustomerTransactionDetails " +
@@ -116,7 +133,7 @@ namespace SpiceItUp
                 }
                 connection.Close();
 
-                if (transList.Count == 0)
+                if (transList.Count == 0) //If the customer does not have any transactions to view, return to customer selection
                 {
                     Console.WriteLine("Going back. This customer does not have a transaction history.");
                     break;
@@ -124,32 +141,37 @@ namespace SpiceItUp
                 Console.WriteLine($"To view an order's specific details, enter the Entry number.");
                 Console.WriteLine("Otherwise, enter 0 to go back.");
 
-                while (true)
+                while (true) //The employee is prompted to choose a transaction to view in more detail
                 {
                     string? mySelection = Console.ReadLine();
                     bool validEntry = int.TryParse(mySelection, out userEntry2);
-                    if (transList.Count >= userEntry2 && userEntry2 > 0)
+                    if (transList.Count >= userEntry2 && userEntry2 > 0) //If employee chooses a transaction
                     {
-                        DetailedTransaction();
+                        DetailedTransaction(); //View the transaction in more detail
                         break;
                     }
-                    else if (userEntry2 == 0)
+                    else if (userEntry2 == 0) //Return to customer list
                     {
                         goBack = true;
                         break;
                     }
-                    else
+                    else //If there is an unknown error
                         Console.WriteLine("Invalid selection. Please try again.");
                 }
             }
         }
 
+        /// <summary>
+        /// A customer's full transaction details are printed off to the employee
+        /// </summary>
         public static void DetailedTransaction()
         {
             int entryList = userEntry2 - 1;
             string detailedTransID = transList[entryList];
 
             using SqlConnection connection = new(connectionString);
+
+            //Print off details reguarding selected transaction
             connection.Open();
             string getOpening = "SELECT TransactionHistory.TransactionID, StoreInfo.StoreID, StoreInfo.StoreName, " +
                 "TransactionHistory.Timestamp, SUM(CustomerTransactionDetails.Price) " +
@@ -175,9 +197,11 @@ namespace SpiceItUp
             }
             connection.Close();
 
+            //Format transaction
             Console.WriteLine("Item Name\t Quantity\t Price");
             Console.WriteLine("=========\t ========\t =====");
 
+            //Print off items that were included in transaction
             connection.Open();
             string getDetails = "SELECT ItemDetails.ItemName, CustomerTransactionDetails.Quantity, CustomerTransactionDetails.Price " +
                 "FROM CustomerTransactionDetails JOIN ItemDetails ON CustomerTransactionDetails.ItemID = ItemDetails.ItemID " +
@@ -195,6 +219,7 @@ namespace SpiceItUp
             connection.Close();
             Console.WriteLine("Press 'ENTER' to continue...");
             Console.ReadLine();
+            //Employee is returned to transaction list
         }
     }
 }

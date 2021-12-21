@@ -71,7 +71,7 @@ namespace SpiceItUp
         /// We will attempt to pull the inventory from entered store
         /// Store inventory is pulled from database and formatted accordingly
         /// </summary>
-        private static void PullStoreInfo()
+        public static void PullStoreInfo()
         {
             using SqlConnection connection = new(connectionString);
 
