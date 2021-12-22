@@ -164,7 +164,7 @@ namespace SpiceItUp
                             bool failedEntry = false;
                             bool sameEntry = false;
                             bool maxQuantity = false;
-                            if (validQuantity == true && quantity > 0 && quantity < 11) //If quantity entered is valid
+                            if (validQuantity == true && quantity > 0 && quantity < 11 && quantity <= inStockList[itemToAdd]) //If quantity entered is valid
                             {
                                 for (int j = 0; j < customerItemID.Count; j++) //Loop through current customer cart to find duplicate Item IDs
                                 {
