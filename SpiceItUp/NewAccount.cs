@@ -96,7 +96,7 @@ namespace SpiceItUp
                     Console.WriteLine("No entry. Please try again");
                 else if (phoneNumber == "EXIT")
                     exit = true;
-                else if (phoneNumber?.Length < 9)
+                else if (phoneNumber?.Length < 10)
                 {
                     Console.WriteLine("The phone number you entered is not long enough. Please enter a new phone number.");
                 }

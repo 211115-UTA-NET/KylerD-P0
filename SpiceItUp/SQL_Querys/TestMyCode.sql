@@ -2,7 +2,7 @@ SELECT * FROM UserInformation;
 SELECT * FROM LoginManager;
 SELECT * FROM ItemDetails;
 
-UPDATE StoreInventory SET InStock = 15;
+UPDATE UserInformation SET PhoneNumber = 8655768493 WHERE FirstName = 'Tyler';
 DELETE FROM TransactionHistory WHERE TransactionID = 'jpCLbc8Hm39';
 DELETE FROM CustomerTransactionHistory WHERE TransactionID = 'jpCLbc8Hm39';
 
