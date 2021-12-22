@@ -20,5 +20,3 @@ D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
 D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Revature\KylerD-P0\SpiceItUp\obj\Debug\net6.0\SpiceItUp.csproj.CopyComplete
-D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\Microsoft.Exchange.WebServices.Auth.dll
-D:\Revature\KylerD-P0\SpiceItUp\bin\Debug\net6.0\Microsoft.Exchange.WebServices.dll

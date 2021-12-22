@@ -1,10 +1,9 @@
 {
   "version": 2,
-  "dgSpecHash": "cQFARy1WUaN5mi/UX014S6gHQIrone2gcSpFA0icknPbB7BMRYcrpLQeULP2Tb4jbmKYQELtbFdQnGazER5RqQ==",
+  "dgSpecHash": "Gutd9qzo8ZZfwBplgsE4iGT9cUNEYTfLk0l1sUzreem7iApkOIgZ4uivxEa7Okx34iLGFi7Vc/tYY8SbkoO10g==",
   "success": true,
   "projectFilePath": "D:\\Revature\\KylerD-P0\\SpiceItUp\\SpiceItUp.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Kyler Dennis\\.nuget\\packages\\microsoft.exchange.webservices\\2.2.0\\microsoft.exchange.webservices.2.2.0.nupkg.sha512",
     "C:\\Users\\Kyler Dennis\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\Kyler Dennis\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Kyler Dennis\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
@@ -15,16 +14,5 @@
     "C:\\Users\\Kyler Dennis\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
     "C:\\Users\\Kyler Dennis\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.Exchange.WebServices 2.2.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
-      "libraryId": "Microsoft.Exchange.WebServices",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

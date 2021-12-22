@@ -7,6 +7,10 @@
     {
         private static bool logout = false;
 
+        public static string? mySelection;
+        public static int userEntry;
+        public static bool validEntry;
+
         /// <summary>
         /// Begin program.
         /// Give user options to create account or sign in.
@@ -22,12 +26,12 @@
                 Console.WriteLine("2: Existing Account Login");
                 Console.WriteLine("3: Exit");
 
-                int userEntry;
+                //int userEntry;
 
                 while (true) //Test to ensure user entry is valid
                 {
-                    string? mySelection = Console.ReadLine();
-                    bool validEntry = int.TryParse(mySelection, out userEntry);
+                    mySelection = Console.ReadLine();
+                    validEntry = int.TryParse(mySelection, out userEntry);
                     if (validEntry == true && userEntry >= 1 && userEntry <= 3)
                     {
                         break; //Break when valid

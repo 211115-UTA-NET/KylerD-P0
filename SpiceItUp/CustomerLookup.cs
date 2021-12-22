@@ -17,6 +17,10 @@ namespace SpiceItUp
 
         private static bool exit = false;
 
+        public static string? firstName;
+        public static string? lastName;
+        public static int test = 0;
+
         /// <summary>
         /// Employee chooses how they would like to lookup the customer (first or last name)
         /// </summary>
@@ -67,14 +71,14 @@ namespace SpiceItUp
             while (true)
             {
                 Console.WriteLine("Enter a first name:");
-                string? firstName = Console.ReadLine();
+                firstName = Console.ReadLine();
                 if (firstName == null) //If entry is null
                 {
                     Console.WriteLine("Invalid entry. Please try again");
                 }
                 else
                 {
-                    int test = 0;
+                    test = 0;
                     try //Try to pull customer information
                     {
                         using SqlConnection connection = new(connectionString);
@@ -120,14 +124,14 @@ namespace SpiceItUp
             while (true)
             {
                 Console.WriteLine("Enter a last name:");
-                string? lastName = Console.ReadLine();
+                lastName = Console.ReadLine();
                 if (lastName == null) //If entry is null
                 {
                     Console.WriteLine("Invalid entry. Please try again");
                 }
                 else
                 {
-                    int test = 0;
+                    test = 0;
                     try //Try to pull customer information
                     {
                         using SqlConnection connection = new(connectionString);

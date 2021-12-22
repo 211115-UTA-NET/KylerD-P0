@@ -19,7 +19,7 @@ namespace SpiceItUp
         /// </summary>
         private static List<int> storeIDList = new List<int>();
         private static List<string> storeNameList = new List<string>();
-        private static List<string> transList = new List<string>();
+        public static List<string> transList = new List<string>();
 
         private static bool exit = false;
         private static int storeEntry;
@@ -60,7 +60,7 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(storeSelection, out storeEntry);
                     if (validEntry == true && storeEntry > 100 && storeEntry < 105) //If selected store is valid
                     {
-                        TransactionHistory(); //Print off transactions in the database from entered store
+                        TransactionHistory(storeEntry); //Print off transactions in the database from entered store
                         break;
                     }
                     else //If there is an unknown error
@@ -78,9 +78,9 @@ namespace SpiceItUp
         /// The basic transaction information is printed for the selected store.
         /// The employee has the option to view a transaction more in depth
         /// </summary>
-        public static void TransactionHistory()
+        public static void TransactionHistory(int myEntry)
         {
-            int selectedStore = storeEntry - 101;
+            int selectedStore = myEntry - 101;
             exit = false;
             while (exit == false)
             {

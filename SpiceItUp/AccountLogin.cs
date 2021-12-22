@@ -14,10 +14,10 @@ namespace SpiceItUp
     public class AccountLogin
     {
         private static int userID = 0;
-        private static string firstName = "";
-        private static string lastName = "";
+        public static string firstName = "";
+        public static string lastName = "";
         private static double phoneNumber = 0;
-        private static string isEmployee = "";
+        public static string isEmployee = "";
 
         private static string? enteredUsername;
         private static string? enteredPassword;
@@ -55,7 +55,7 @@ namespace SpiceItUp
 
             try
             {
-                TestEntries(); //Can we log into an account?
+                TestEntries(enteredUsername, enteredPassword); //Can we log into an account?
             }
             catch (Exception)
             {
@@ -83,7 +83,7 @@ namespace SpiceItUp
         /// If so, customer is logged in.
         /// If anything fails, we return to the main program class
         /// </summary>
-        public static void TestEntries()
+        public static void TestEntries(string username, string password)
         {
             using SqlConnection connection = new(connectionString);
 
@@ -91,8 +91,8 @@ namespace SpiceItUp
             connection.Open();
             string getLoginManager = $"SELECT UserID FROM LoginManager WHERE (Username = @username AND \"Password\" = @password);";
             using SqlCommand readLoginManager = new(getLoginManager, connection);
-            readLoginManager.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = enteredUsername;
-            readLoginManager.Parameters.Add("@password", System.Data.SqlDbType.VarChar).Value = enteredPassword;
+            readLoginManager.Parameters.Add("@username", System.Data.SqlDbType.VarChar).Value = username;
+            readLoginManager.Parameters.Add("@password", System.Data.SqlDbType.VarChar).Value = password;
             using SqlDataReader loginReader = readLoginManager.ExecuteReader();
             while(loginReader.Read())
             {

@@ -16,7 +16,7 @@ namespace SpiceItUp
 
         private static int userID;
         private static bool exit = false;
-        private static List<string> transList = new List<string>();
+        public static List<string> transList = new List<string>();
         private static int userEntry;
 
         /// <summary>
@@ -78,7 +78,8 @@ namespace SpiceItUp
                     bool validEntry = int.TryParse(mySelection, out userEntry);
                     if (transList.Count >= userEntry && userEntry > 0) //If entery is valid
                     {
-                        DetailedTransaction(); //Print the details of the transaction
+                        DetailedTransaction(userEntry); //Print the details of the transaction
+                        Console.ReadLine(); 
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to exit
@@ -96,9 +97,9 @@ namespace SpiceItUp
         /// Based on customer entry, a transactions details are printed more in depth.
         /// Information is pulled from the databases to retrieve all information
         /// </summary>
-        public static void DetailedTransaction()
+        public static void DetailedTransaction(int entryList)
         {
-            int entryList = userEntry - 1;
+            entryList = userEntry - 1;
             string detailedTransID = transList[entryList];
 
             using SqlConnection connection = new(connectionString);
@@ -149,7 +150,6 @@ namespace SpiceItUp
             Console.WriteLine("==============================");
             connection.Close();
             Console.WriteLine("Press 'ENTER' to continue...");
-            Console.ReadLine();
             //Customer is returned to transaction list
         }
     }

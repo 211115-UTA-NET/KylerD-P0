@@ -25,7 +25,7 @@ namespace SpiceItUp
         private static List<int> customerIDList = new List<int>();
         private static List<string> customerFirstNameList = new List<string>();
         private static List<string> customerLastNameList = new List<string>();
-        private static List<string> transList = new List<string>();
+        public static List<string> transList = new List<string>();
 
         /// <summary>
         /// The database prints off a list of customers for the employee to choose from
@@ -76,7 +76,7 @@ namespace SpiceItUp
                     if (customerIDList.Count >= userEntry && userEntry > 0) //If employee chooses a valid customer
                     {
                         userEntry--;
-                        TransactionHistory(); //Print customer's transaction history
+                        TransactionHistory(userEntry); //Print customer's transaction history
                         break;
                     }
                     else if (userEntry == 0) //If customer wishes to return to account main menu
@@ -94,7 +94,7 @@ namespace SpiceItUp
         /// Once the employee chooses a customer, that customer's transaction list is printed off.
         /// The employee can choose to view a transaction in more details if they wish
         /// </summary>
-        public static void TransactionHistory()
+        public static void TransactionHistory(int myEntry)
         {
             goBack = false;
 
@@ -105,7 +105,7 @@ namespace SpiceItUp
                 using SqlConnection connection = new(connectionString);
 
                 //Format our transaction list
-                Console.WriteLine($"Here is {customerFirstNameList[userEntry]} {customerLastNameList[userEntry]}'s History:");
+                Console.WriteLine($"Here is {customerFirstNameList[myEntry]} {customerLastNameList[myEntry]}'s History:");
                 Console.WriteLine("==============================");
                 Console.WriteLine(String.Format("{0, -7} {1, -17} {2, -10} {3, -7}",
                         "Entry", "Transaction ID", "Store ID", "Total Price"));
@@ -119,7 +119,7 @@ namespace SpiceItUp
                     "ON TransactionHistory.TransactionID = CustomerTransactionDetails.TransactionID " +
                     "WHERE TransactionHistory.UserID = @userID GROUP BY TransactionHistory.TransactionID, TransactionHistory.StoreID;";
                 using SqlCommand orderHistory = new(getOrderHistory, connection);
-                orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerIDList[userEntry];
+                orderHistory.Parameters.Add("@userID", System.Data.SqlDbType.Int).Value = customerIDList[myEntry];
                 using SqlDataReader reader = orderHistory.ExecuteReader();
                 int entry = 1;
                 while (reader.Read())
